@@ -1,9 +1,10 @@
 import React from 'react'
 
-function collectionCard() {
+function CollectionCard(searchTerm) {
+  console.log(searchTerm)
   return (
     <div>collectionCard</div>
   )
 }
 
-export default collectionCard
+export default CollectionCard
