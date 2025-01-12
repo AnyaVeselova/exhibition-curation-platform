@@ -36,7 +36,7 @@ const CollectionArtworks: React.FC = () => {
     fetchArtworks();
   }, []);
 
-
+  console.log(artworks)
   return (
     <>
       <SearchBar setSearchTerm={setSearchTerm} />

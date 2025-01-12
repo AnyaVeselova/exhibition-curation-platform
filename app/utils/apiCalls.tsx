@@ -84,3 +84,37 @@ export const fetchImagesFromMet = async (): Promise<Artwork[]> => {
     return [];
   }
 };
+
+const fetchCollectionsFromHarvard = async (ids, api) => {
+  const promiseArray = ids.map(id => fetch(${harvardBaseUrl}/${id}?apikey=${api}));
+  const promiseResults = await Promise.all(promiseArray);
+  const result = await Promise.all(promiseResults.map(response => response.json()));
+  return result
+  .filter(record => record.primaryimageurl && record.primaryimageurl)
+  .map(record => ({id: record.id, image: record.primaryimageurl, department: record.department}))
+}
+
+const fetchCollectionsFromMet = async (ids, url) => {
+  const promiseArray = ids.map(id => fetch(${url}/${id}));
+  const promiseResults = await Promise.all(promiseArray);
+  const result = await Promise.all(promiseResults.map(response => response.json()));
+  return result
+  .filter(record => record.primaryImageSmall && record.primaryImageSmall)
+  .map(record => ({id: record.objectID, image: record.primaryImage || record.primaryImageSmall, department: record.department}))
+}
+
+export const getCollections = async () => {
+  const harvardIds = [202279, 311236, 6877, 230326];
+  const metIds = [467828, 459618, 35928, 449005, 471988]; 
+  
+  try {
+      const [harvardCollection, metCollection] = await Promise.all([
+          fetchCollectionsFromHarvard(harvardIds, apiKey),
+          fetchCollectionsFromMet(metIds, metBaseUrl),
+      ]);         
+      return [...harvardCollection, ...metCollection]
+  } catch(error) {
+      console.log(error);
+      
+  }
+}
