@@ -6,7 +6,7 @@ export default function Home() {
   const museums = [{
     id: 'metmuseum', name: 'The Metropolitan Museum of Art', imageSrc: '/met.avif', about: 'The Metropolitan Museum of Art presents over 5,000 years of art from around the world for everyone to experience and enjoy. The Museum lives in two iconic sites in New York City—The Met Fifth Avenue and The Met Cloisters. Millions of people also take part in The Met experience online.'
   },
-  {id: 'europeana', name: 'Europeana', imageSrc: '/europeana.jpg', about: "The Europeana website provides cultural heritage enthusiasts, professionals, teachers, and researchers with access to Europe's digital cultural heritage. Why? To inspire and inform fresh perspectives and open conversations about our history and culture. To share and enjoy our rich cultural heritage."}
+  {id: 'harvard', name: 'The Harvard Art Museums', imageSrc: '/harvard.jpeg', about: "The Europeana website provides cultural heritage enthusiasts, professionals, teachers, and researchers with access to Europe's digital cultural heritage. Why? To inspire and inform fresh perspectives and open conversations about our history and culture. To share and enjoy our rich cultural heritage."}
   
 ]
 
