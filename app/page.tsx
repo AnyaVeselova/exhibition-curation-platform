@@ -16,7 +16,7 @@ export default function Home() {
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 m-5">
       {museums.map((museum) => (
         <div key={museum.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <Link href={`/search`}>
+          <Link href={`/collections`}>
             
           <Image
                 src={museum.imageSrc}

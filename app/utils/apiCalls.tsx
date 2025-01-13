@@ -1,6 +1,6 @@
 const apiKey = process.env.NEXT_PUBLIC_HARVARD_API_KEY;
 const harvardBaseUrl = 'https://api.harvardartmuseums.org/object';
-const metBaseUrl = 'https://collectionapi.metmuseum.org/public/collection/v1';
+const metBaseUrl = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
 
 interface Artwork {
   id: number;
@@ -36,9 +36,20 @@ export const fetchImagesFromHarvardByDepartment = async (params: {
   century?: string;
   technique?: string;
   medium?: string;
+  division?: string;
 }): Promise<Artwork[]> => {
-  const urlParams = new URLSearchParams({ apikey: apiKey, ...params });
-  const url = `${harvardBaseUrl}?${urlParams.toString()}`;
+  
+  const queryParts = Object.values(params)
+    .filter(value => value)
+    .map(value => encodeURIComponent(value)); 
+
+  const query = queryParts.length > 0 ? `q=${queryParts.join(' ')}` : '';
+  
+  const additionalParams = new URLSearchParams({ apikey: apiKey });
+
+  const url = `${harvardBaseUrl}?${query}&${additionalParams.toString()}`;
+  
+  console.log('Final URL:', url); 
   return fetchData(url);
 };
 
@@ -85,26 +96,28 @@ export const fetchImagesFromMet = async (): Promise<Artwork[]> => {
   }
 };
 
-const fetchCollectionsFromHarvard = async (ids, api) => {
-  const promiseArray = ids.map(id => fetch(${harvardBaseUrl}/${id}?apikey=${api}));
+export const fetchCollectionsFromHarvard = async (ids, api) => {
+  const promiseArray = ids.map(id => fetch(`${harvardBaseUrl}/${id}?apikey=${api}`));
   const promiseResults = await Promise.all(promiseArray);
   const result = await Promise.all(promiseResults.map(response => response.json()));
+ console.log(result)
   return result
   .filter(record => record.primaryimageurl && record.primaryimageurl)
-  .map(record => ({id: record.id, image: record.primaryimageurl, department: record.department}))
+  .map(record => ({id: record.id, image: record.primaryimageurl, division: record.division}))
 }
 
 const fetchCollectionsFromMet = async (ids, url) => {
-  const promiseArray = ids.map(id => fetch(${url}/${id}));
+  const promiseArray = ids.map(id => fetch(`${url}/${id}`));
   const promiseResults = await Promise.all(promiseArray);
   const result = await Promise.all(promiseResults.map(response => response.json()));
+  console.log(result)
   return result
   .filter(record => record.primaryImageSmall && record.primaryImageSmall)
   .map(record => ({id: record.objectID, image: record.primaryImage || record.primaryImageSmall, department: record.department}))
 }
 
 export const getCollections = async () => {
-  const harvardIds = [202279, 311236, 6877, 230326];
+  const harvardIds = [162, 311236, 6877, 230326];
   const metIds = [467828, 459618, 35928, 449005, 471988]; 
   
   try {
@@ -112,6 +125,7 @@ export const getCollections = async () => {
           fetchCollectionsFromHarvard(harvardIds, apiKey),
           fetchCollectionsFromMet(metIds, metBaseUrl),
       ]);         
+      console.log([...harvardCollection, ...metCollection])
       return [...harvardCollection, ...metCollection]
   } catch(error) {
       console.log(error);
