@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { fetchCollections } from '@/app/utils/apiCalls';
+import { fetchCollections, Collection} from '@/app/utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
 
