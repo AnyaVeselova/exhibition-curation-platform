@@ -1,32 +1,33 @@
 'use client';
 import React, { use, useState, useEffect } from 'react';
-import SearchBar from '../[collection]/searchBar';
+import SearchBar from './searchBar';
 import { fetchArtworksByDepartment } from '@/app/utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
 
-const Collection = ({ params }: { params: Promise<{ collection: string } >}) => {
+const Collection = ({ params }: { params: Promise<{ collection: string }> }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const {collection} = use(params)
-  const department = collection ? decodeURIComponent(collection).replace(/-/g, ' ') : '';  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const { collection } = use(params);
+  const decodedCollection = decodeURIComponent(collection);
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
 
   useEffect(() => {
     const fetchArtworks = async () => {
       try {
-        const collectionArtworks = await fetchArtworksByDepartment(department);
+        const collectionArtworks = await fetchArtworksByDepartment(decodedCollection);
         setArtworks(collectionArtworks);
       } catch (error) {
         console.error('Error fetching artworks:', error);
       }
     };
     fetchArtworks();
-  }, [department]);
+  }, [decodedCollection]);
 
   return (
     <div>
       <SearchBar setSearchTerm={setSearchTerm} />
       {artworks.map((artwork) => (
-        <Link href={`/[artwork]`} key={artwork.id} >
+        <Link href={`/collections/${encodeURIComponent(collection)}/${artwork.id}`} key={artwork.id}>
           <CollectionCard image={artwork.imageUrl} title={artwork.title} />
         </Link>
       ))}

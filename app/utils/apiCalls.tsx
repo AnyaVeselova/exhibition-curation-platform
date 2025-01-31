@@ -84,3 +84,23 @@ export const fetchCollections = async (): Promise<Collection[]> => {
 
   return collectionsWithImages.filter((collection) => collection !== null) as Collection[];
 };
+
+export const fetchArtworkDetails = async (id: string) => {
+  try {
+    const response = await fetch(`https://openaccess-api.clevelandart.org/api/artworks/${id}`);
+    
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch artwork with ID ${id}`);
+    }
+
+    
+    const data = await response.json();
+
+    
+    return data.data;  
+  } catch (error) {
+    console.error('Error fetching artwork details:', error);
+    throw error; 
+  }
+};

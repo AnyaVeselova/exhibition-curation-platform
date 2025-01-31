@@ -22,7 +22,7 @@ const CollectionArtworks: React.FC = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {collections.map((collection) => (
-        <Link href={`/collections/${collection.name.replace(/\s+/g, '-')}`} key={collection.id}>
+        <Link href={`/collections/${encodeURIComponent(collection.name)}`} key={collection.id}>
           <CollectionCard image={collection.imageUrl} title={collection.name} />
         </Link>
       ))}
