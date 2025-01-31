@@ -1,59 +1,32 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
-import CollectionCard from '../collectionCard';
-import { fetchImagesFromHarvard, fetchImagesFromMet, getCollections } from '../utils/apiCalls';
+import { fetchCollections } from '@/app/utils/apiCalls';
+import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
 
-interface Collection {
-  objectId?: number;
-   id?: number; 
-   image: string; 
-   primaryImage: string;
-   division:string;
-   department:string;
-}
-
 const CollectionArtworks: React.FC = () => {
-
   const [collections, setCollections] = useState<Collection[]>([]);
- 
 
-  useEffect(()=> {
-    const fetchCollections = async () => {
-    try {
-      const collections = await getCollections();
-      if (collections) {  
-          setCollections(collections);
+  useEffect(() => {
+    const loadCollections = async () => {
+      try {
+        const collectionsData = await fetchCollections();
+        setCollections(collectionsData);
+      } catch (error) {
+        console.error('Error fetching collections:', error);
       }
-  } catch(error) {
-      console.log(error);
-}}
-fetchCollections();}, [])
+    };
+    loadCollections();
+  }, []);
 
-
-
-  console.log(collections)
   return (
-    <>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {collections.map((collection) => (
-          <Link 
-          href={`collections/
-           ${collection.division || collection.department}`
-          }
-          key={collection.id}>
-          <CollectionCard
-            key={collection.id}
-            image={collection.image || "/sorry-image-not-available.jpg"}
-            title={collection.division || collection.department}
-          
-          />
-          </Link>
-        ))}
-      </div>
-    </>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {collections.map((collection) => (
+        <Link href={`/collections/${collection.name.replace(/\s+/g, '-')}`} key={collection.id}>
+          <CollectionCard image={collection.imageUrl} title={collection.name} />
+        </Link>
+      ))}
+    </div>
   );
 };
 

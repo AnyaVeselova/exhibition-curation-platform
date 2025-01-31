@@ -1,57 +1,37 @@
-'use client'
-import React, { useState, useEffect } from 'react'
+'use client';
+import React, { use, useState, useEffect } from 'react';
 import SearchBar from '../[collection]/searchBar';
-import { fetchImagesFromHarvardByDepartment } from '@/app/utils/apiCalls';
+import { fetchArtworksByDepartment } from '@/app/utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
 
+const Collection = ({ params }: { params: Promise<{ collection: string } >}) => {
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const {collection} = use(params)
+  const department = collection ? decodeURIComponent(collection).replace(/-/g, ' ') : '';  const [artworks, setArtworks] = useState<Artwork[]>([]);
 
-interface Artwork {
-  objectid?: number; // For Met API
-  primaryimageurl?: string;
-  primaryImage?: string; // For Met API
-  creditline: string;
-  [key: string]: any;
-}
-
-const Collection = ({params}:{params:{collection:string}}) => {
-   const [searchTerm, setSearchTerm] = useState<string>('');
-   const division = decodeURIComponent(params.collection).replace(/-/g, ' ');
-  const [artworks, setArtworks] = useState<Artwork[]>([]);
-    
   useEffect(() => {
-     const fetchArtworks = async () => {
-       try {
-         const collectionArtworks = await fetchImagesFromHarvardByDepartment({division})
-         setArtworks(collectionArtworks);
-       } catch (error) {
-         console.error('Error fetching artworks:', error);
-       }
-     };
-
-     fetchArtworks();
-   }, [division]);
-
-   console.log(artworks)
+    const fetchArtworks = async () => {
+      try {
+        const collectionArtworks = await fetchArtworksByDepartment(department);
+        setArtworks(collectionArtworks);
+      } catch (error) {
+        console.error('Error fetching artworks:', error);
+      }
+    };
+    fetchArtworks();
+  }, [department]);
 
   return (
-    <div><SearchBar setSearchTerm={setSearchTerm} />
-   {artworks.map((artwork) => (
-          <Link 
-          
-          href={`artwork/`
-          }
-          key={artwork.objectid}>
-          <CollectionCard
-            key={artwork.objectid}
-            image={artwork.primaryimageurl || "/sorry-image-not-available.jpg"}
-            title={artwork.creditline}
-          
-          />
-          </Link>
-     ))}
+    <div>
+      <SearchBar setSearchTerm={setSearchTerm} />
+      {artworks.map((artwork) => (
+        <Link href={`/[artwork]`} key={artwork.id} >
+          <CollectionCard image={artwork.imageUrl} title={artwork.title} />
+        </Link>
+      ))}
     </div>
-  )
-}
+  );
+};
 
-export default Collection
+export default Collection;

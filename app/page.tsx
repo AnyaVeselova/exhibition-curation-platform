@@ -4,9 +4,8 @@ import Image from "next/image";
 export default function Home() {
 
   const museums = [{
-    id: 'metmuseum', name: 'The Metropolitan Museum of Art', imageSrc: '/met.avif', about: 'The Metropolitan Museum of Art presents over 5,000 years of art from around the world for everyone to experience and enjoy. The Museum lives in two iconic sites in New York City—The Met Fifth Avenue and The Met Cloisters. Millions of people also take part in The Met experience online.'
-  },
-  {id: 'harvard', name: 'The Harvard Art Museums', imageSrc: '/harvard.jpeg', about: "The Harvard Art Museums are comprised of three museums—the Fogg Museum, Busch-Reisinger Museum, and Arthur M. Sackler Museum—each with a different history, collection, guiding philosophy, and identity."}
+    id: 'clevelend', name: 'The Clevelend Museum of Art', imageSrc: '/cleveland-museum-of-art.webp', about: 'The Cleveland Museum of Art is renowned for the quality and breadth of its collection, which includes more than 63,000 artworks and spans 6,000 years of achievement in the arts. The museum is a significant international forum for exhibitions, scholarship, and performing arts and is a leader in digital innovations. One of the top comprehensive art museums in the nation, recognized for its award-winning Open Access program and free of charge to all, the Cleveland Museum of Art is located in the University Circle neighborhood.'
+  }
   
 ]
 
