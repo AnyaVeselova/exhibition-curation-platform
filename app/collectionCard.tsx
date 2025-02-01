@@ -14,7 +14,13 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ image, title, descripti
   return (
     <div className="bg-white shadow-md rounded-lg mb-15 mt-20 overflow-hidden border border-gray-200">
       <div className='relative h-60 w-full'>      
-        <Image src={image} alt={title} layout='fill' objectFit='contain' />
+        <Image 
+          src={image}
+          alt={title}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority 
+          style={{ objectFit: 'contain' }}/>
       </div>
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-800">{title}</h3>

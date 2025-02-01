@@ -14,7 +14,7 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
   const router = useRouter();
 
   const userId = 'user123';
-  
+
   useEffect(() => {
     const fetchArtwork = async () => {
       try {
@@ -46,48 +46,56 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
   const handleSave = () => {
     if (!artworkData) return;
 
-    const savedArtworksStr = localStorage.getItem(`savedArtworks_${userId}`);
-    let savedArtworks = savedArtworksStr ? JSON.parse(savedArtworksStr) : [];
-    const collectionName = artworkData.collection || 'default'; // Use the artwork's collection or 'default' if not available
+    try {
 
-    if (!saved) {
+      const savedArtworksStr = localStorage.getItem(`savedArtworks_${userId}`);
+      let savedArtworks = savedArtworksStr ? JSON.parse(savedArtworksStr) : [];
 
-      savedArtworks.push({
-        id: artworkData.id,
-        image: artworkData.images.web.url,
-        title: artworkData.title,
-        description: artworkData.description,
-        collectionName,
-      });
+      const collectionName = artworkData.collection || 'default'; 
 
-      
-      localStorage.setItem(`savedArtworks_${userId}`, JSON.stringify(savedArtworks));
-      setSaved(true);
-    } else {
-     
-      savedArtworks = savedArtworks.filter((item: any) => item.id !== artworkData.id);
-      localStorage.setItem(`savedArtworks_${userId}`, JSON.stringify(savedArtworks));
-      setSaved(false);
+      if (!saved) {
+       
+        savedArtworks.push({
+          id: artworkData.id,
+          image: artworkData.images?.web?.url || 'default-image-url', 
+          title: artworkData.title,
+          description: artworkData.description,
+          collectionName,
+        });
+
+        localStorage.setItem(`savedArtworks_${userId}`, JSON.stringify(savedArtworks));
+        setSaved(true); 
+      } else {
+       
+        savedArtworks = savedArtworks.filter((item: any) => item.id !== artworkData.id);
+        localStorage.setItem(`savedArtworks_${userId}`, JSON.stringify(savedArtworks));
+        setSaved(false); 
+      }
+    } catch (error) {
+      console.error('Error saving artwork:', error);
     }
   };
 
   if (loading) return <h1>Loading...</h1>;
   if (!artworkData) return <h1>Artwork not found</h1>;
 
-  
   return (
     <div className="relative">
       <button
         className={`absolute top-3 right-3 p-2 rounded-full ${
           saved ? 'bg-blue-500 text-white' : 'bg-gray-200'
         }`}
-        onClick={handleSave}
+        style={{ zIndex: 10 }}
+        onClick={() => {
+          
+          handleSave();
+        }}
       >
         <Bookmark className="w-6 h-6" fill={saved ? 'currentColor' : 'none'} />
       </button>
 
       <CollectionCard
-        image={artworkData.images.web.url}
+        image={artworkData.images?.web?.url || '/default-image.jpg'}
         title={artworkData.title}
         description={artworkData.description}
         culture={artworkData.culture}

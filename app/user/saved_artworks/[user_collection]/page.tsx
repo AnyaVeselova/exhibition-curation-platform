@@ -51,6 +51,7 @@ const CollectionDetail = ({ params }: { params: Promise<{ user_collection: strin
              <button
                 onClick={() => handleDelete(artwork.id)}
                 className="absolute top-20 right-3 p-2 bg-transparent text-red-500 hover:text-red-700 transition"
+                style={{ zIndex: 10 }}
               >
                 <Trash2 size={24} />
               </button>
