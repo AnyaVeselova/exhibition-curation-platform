@@ -11,7 +11,7 @@ export interface Collection {
   imageUrl: string;
 }
 
-const DEPARTMENTS = [
+export const DEPARTMENTS = [
   "African Art",
   "American Painting and Sculpture",
   "Art of the Americas",
@@ -35,13 +35,18 @@ const DEPARTMENTS = [
   "Textiles"
 ];
 
-export const fetchArtworksByDepartment = async (department: string, page: number, perPage: number): Promise<Artwork[]> => {
+export const fetchArtworksByDepartment = async (department: string, page: number, perPage: number, type?: string,
+  artist?: string): Promise<Artwork[]> => {
   
   const skip = (page - 1) * perPage;
   
-  const response = await fetch(
-    `https://openaccess-api.clevelandart.org/api/artworks/?department=${encodeURIComponent(department)}&has_image=1&limit=${perPage}&skip=${skip}`
-  );
+   let query = `https://openaccess-api.clevelandart.org/api/artworks/?has_image=1&limit=${perPage}&skip=${skip}`;
+  
+  if (department) query += `&department=${encodeURIComponent(department)}`;
+  if (type) query += `&type=${encodeURIComponent(type)}`;
+  if (artist) query += `&creator=${encodeURIComponent(artist)}`;
+  
+  const response = await fetch(query);
   const data = await response.json();
 
   return data.data.map((item: any) => ({

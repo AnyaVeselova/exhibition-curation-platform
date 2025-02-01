@@ -6,6 +6,8 @@ import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
 import Pagination from './pagination';
 import {useCollection} from '../../context/collectionContext'
+import { useSearchParams } from 'next/navigation';
+
 
 const perPage = 10
 const Collection = ({ params }: { params: Promise<{ collection: string }> }) => {
@@ -16,6 +18,9 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
   const [artworks, setArtworks] = useState<Artwork[]>([]);
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const searchParams = useSearchParams();
+  const type = searchParams.get('type') || '';
+  const artist = searchParams.get('artist') || '';
 
   useEffect(()=> {
 
@@ -28,7 +33,7 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
     
     const fetchArtworks = async () => {
       try {
-        const collectionArtworks = await fetchArtworksByDepartment(decodedCollection, page, perPage);
+        const collectionArtworks = await fetchArtworksByDepartment(decodedCollection, page, perPage, type, artist);
         setArtworks(collectionArtworks);
         if(page === 1 && collectionArtworks.length === perPage) {
           setTotalPages(Math.ceil(1000/perPage))
@@ -38,7 +43,8 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
       }
     };
     fetchArtworks();
-  }, [decodedCollection, page]);
+  }, [decodedCollection, page, type, artist]);
+  
 
   return (
     <div>

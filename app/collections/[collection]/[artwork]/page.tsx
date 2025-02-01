@@ -74,6 +74,7 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
   if (loading) return <h1>Loading...</h1>;
   if (!artworkData) return <h1>Artwork not found</h1>;
 
+  
   return (
     <div className="relative">
       <button
