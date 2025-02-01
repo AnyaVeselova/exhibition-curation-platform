@@ -35,9 +35,12 @@ const DEPARTMENTS = [
   "Textiles"
 ];
 
-export const fetchArtworksByDepartment = async (department: string): Promise<Artwork[]> => {
+export const fetchArtworksByDepartment = async (department: string, page: number, perPage: number): Promise<Artwork[]> => {
+  
+  const skip = (page - 1) * perPage;
+  
   const response = await fetch(
-    `https://openaccess-api.clevelandart.org/api/artworks/?department=${encodeURIComponent(department)}&has_image=1`
+    `https://openaccess-api.clevelandart.org/api/artworks/?department=${encodeURIComponent(department)}&has_image=1&limit=${perPage}&skip=${skip}`
   );
   const data = await response.json();
 
