@@ -2,6 +2,7 @@
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import "./globals.css";
+import { CollectionProvider } from "./context/collectionContext";
 
 
 export default function RootLayout({
@@ -11,12 +12,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-      >
+      <body>
+        <CollectionProvider>
         <Navbar/>
-   
         <main className="p-20 mb-20">{children}</main>
         <Footer/>
+        </CollectionProvider>
       </body>
     </html>
   );

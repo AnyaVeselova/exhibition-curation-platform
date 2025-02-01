@@ -5,18 +5,27 @@ import { fetchArtworksByDepartment, Artwork } from '@/app/_utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
 import Pagination from './pagination';
+import {useCollection} from '../../context/collectionContext'
 
 const perPage = 10
 const Collection = ({ params }: { params: Promise<{ collection: string }> }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const { collection } = use(params);
+  const {setCollection} = useCollection()
   const decodedCollection = decodeURIComponent(collection);
   const [artworks, setArtworks] = useState<Artwork[]>([]);
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
 
+  useEffect(()=> {
+
+      setCollection(collection as string)
+    
+  }, [collection, setCollection])
+
 
   useEffect(() => {
+    
     const fetchArtworks = async () => {
       try {
         const collectionArtworks = await fetchArtworksByDepartment(decodedCollection, page, perPage);
