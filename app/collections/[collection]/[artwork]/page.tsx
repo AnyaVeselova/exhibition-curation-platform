@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { fetchArtworkDetails } from '@/app/utils/apiCalls';
+import { fetchArtworkDetails } from '@/app/_utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import { Bookmark } from 'lucide-react';
 

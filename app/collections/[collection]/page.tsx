@@ -1,7 +1,7 @@
 'use client';
 import React, { use, useState, useEffect } from 'react';
 import SearchBar from './searchBar';
-import { fetchArtworksByDepartment, Artwork } from '@/app/utils/apiCalls';
+import { fetchArtworksByDepartment, Artwork } from '@/app/_utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
 
