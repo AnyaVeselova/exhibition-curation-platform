@@ -46,7 +46,7 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
 
   return (
     <div>
-      
+       <h2 className="text-center text-3xl font-semibold text-gray-800 mt-4 mb-6">Collection: {decodedCollection}</h2>
       {artworks.map((artwork) => (
         <Link href={`/collections/${encodeURIComponent(collection)}/${artwork.id}`} key={artwork.id}>
           <CollectionCard image={artwork.imageUrl} title={artwork.title} />

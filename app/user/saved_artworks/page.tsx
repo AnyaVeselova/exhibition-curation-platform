@@ -8,7 +8,7 @@ import type { Artwork } from '@/app/_utils/apiCalls';
 const userId = 'user123'; 
 
 const SavedArtworks = () => {
-  const [savedArtworks, setSavedArtworks] = useState<Artwork[]>([]);
+ 
   const [groupedCollections, setGroupedCollections] = useState<Record<string, Artwork[]>>({});
   const router = useRouter();
 
@@ -25,7 +25,7 @@ const SavedArtworks = () => {
       });
 
       setGroupedCollections(collections);
-      setSavedArtworks(artworks);
+   
     }
   }, [userId]);
 
