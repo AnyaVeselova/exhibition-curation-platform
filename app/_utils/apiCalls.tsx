@@ -49,10 +49,15 @@ export const fetchArtworksByDepartment = async (department: string, page: number
   const response = await fetch(query);
   const data = await response.json();
 
-  return data.data.map((item: any) => ({
+  return data.data.map((item: {
+    id:number;
+    title: string;
+    creators?:{description:string}[];
+    images?:{web?:{url:string}}
+  }) => ({
     id: item.id,
     title: item.title,
-    creator: item.creators?.map((creator: any) => creator.description).join(', ') || 'Unknown',
+    creator: item.creators?.map((creator) => creator.description).join(', ') || 'Unknown',
     imageUrl: item.images?.web?.url || '/sorry-image-not-available.jpg',
   }));
 };
