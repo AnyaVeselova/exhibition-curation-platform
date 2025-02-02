@@ -2,7 +2,7 @@
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import "./globals.css";
-import { CollectionProvider } from "./context/collectionContext";
+import { CollectionProvider } from "./collectionContext";
 
 
 export default function RootLayout({

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useCollection } from '../context/collectionContext';
+import { useCollection } from '../collectionContext';
 import { usePathname } from 'next/navigation';
 import { Home, Filter, User, Album } from 'lucide-react';
 import FilterMenu from '../components/filterMenu'; // Import the FilterMenu

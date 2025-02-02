@@ -4,7 +4,7 @@ import { fetchArtworksByDepartment, Artwork } from '@/app/_utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
 import Pagination from './pagination';
-import {useCollection} from '../../context/collectionContext'
+import {useCollection} from '../../collectionContext'
 import { useSearchParams } from 'next/navigation';
 
 
