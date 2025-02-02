@@ -29,7 +29,7 @@ const SavedArtworks = () => {
     }
   }, [userId]);
 
-  console.log(groupedCollections)
+ 
 
   const handleCollectionClick = (collectionName: string) => {
     router.push(`/user/saved_artworks/${collectionName}`);
@@ -45,17 +45,17 @@ const SavedArtworks = () => {
           {Object.entries(groupedCollections).map(([collectionName, artworks]) => (
             <div
               key={collectionName}
-              className="border rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+              className=" overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
               onClick={() => handleCollectionClick(collectionName)}
             >
-              <img
-                src={artworks[0].image}
-                alt={collectionName}
-                className="w-full h-48 object-cover bg-gray-100"
-              />
-              <div className="p-2 text-center">
-                <p className="font-semibold">{collectionName}</p>
-              </div>
+            <CollectionCard
+            image={artworks[0].image || '/sorry-image-not-available.jpg'}  
+            title={collectionName}     
+            description={artworks[0].description}  
+            culture={artworks[0].culture}   
+            date={artworks[0].creation_date}  
+            didYouKnow={artworks[0].did_you_know} 
+            />
             </div>
           ))}
         </div>

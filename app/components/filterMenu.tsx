@@ -1,6 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import { Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { DEPARTMENTS } from '../_utils/apiCalls';
 
@@ -72,7 +71,6 @@ function FilterMenu({ isOpen, setIsOpen }: FilterMenuProps) {
               Apply Filter
             </button>
 
-            {/* Close button */}
             <button
               className="mt-4 text-red-500 w-full"
               onClick={() => setIsOpen(false)}
