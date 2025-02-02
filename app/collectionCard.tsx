@@ -25,7 +25,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ image, title, descripti
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
         {date && <p className="text-sm text-gray-500">{date}</p>}
-        {culture && <p className="text-sm text-gray-600">{culture.join(', ')}</p>}
+        {culture && <p className="text-sm text-gray-600">{culture}</p>}
         {description && <p className="text-sm mt-2">{description}</p>}
         {didYouKnow && <p className="text-xs italic text-gray-500 mt-2">💡 {didYouKnow}</p>}
       </div>
