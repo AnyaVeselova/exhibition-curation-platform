@@ -33,7 +33,7 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
     }
   }, [artwork]);
 
- 
+
   
   useEffect(() => {
     if (artworkData) {
@@ -44,6 +44,8 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
     }
   }, [artworkData, userId]);
 
+
+
   const handleSave = () => {
     if (!artworkData) return;
 
@@ -52,9 +54,9 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
       const savedArtworksStr = localStorage.getItem(`savedArtworks_${userId}`);
       let savedArtworks = savedArtworksStr ? JSON.parse(savedArtworksStr) : [];
 
-      const collectionName = artworkData.collection || 'default'; 
-
+      const collectionName = artworkData.department 
       if (!saved) {
+        
        
         savedArtworks.push({
           id: artworkData.id,
@@ -63,7 +65,7 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
           description: artworkData.description,
           collectionName,
         });
-
+   
         localStorage.setItem(`savedArtworks_${userId}`, JSON.stringify(savedArtworks));
         setSaved(true); 
       } else {
@@ -76,6 +78,8 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
       console.error('Error saving artwork:', error);
     }
   };
+
+  
 
   if (loading) return <h1>Loading...</h1>;
   if (!artworkData) return <h1>Artwork not found</h1>;

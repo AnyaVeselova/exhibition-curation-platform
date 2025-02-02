@@ -1,40 +1,46 @@
 'use client';
 
 import {use, useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import CollectionCard from '@/app/collectionCard'; 
 import { Trash2 } from 'lucide-react';
-import type { Artwork } from '@/app/_utils/apiCalls';
+import { Artwork } from '@/app/_utils/apiCalls';
 
 const userId = 'user123';
 
 const CollectionDetail = ({ params }: { params: Promise<{ user_collection: string }> }) => {
   const { user_collection } = use(params) 
   const decodedUserCollection = decodeURIComponent(user_collection);
-  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [artworks, setArtworks] = useState<any[]>([]);
 
  
   useEffect(() => {
     const savedArtworksStr = localStorage.getItem(`savedArtworks_${userId}`);
     if (savedArtworksStr) {
       const artworks = JSON.parse(savedArtworksStr);
-     
-      setArtworks(artworks);
+      const filteredArtworks = artworks.filter(
+        (artwork: Artwork) => artwork.collectionName === decodedUserCollection
+      );
+
+      setArtworks(filteredArtworks);
     }
   }, [decodedUserCollection]); 
 
+  console.log(decodedUserCollection)
 
-  const handleDelete = (artworkId: number) => {
+
+  const handleDelete = (artworkId: string) => {
     const savedArtworksStr = localStorage.getItem(`savedArtworks_${userId}`);
     if (savedArtworksStr) {
       let artworks = JSON.parse(savedArtworksStr);
 
      
-      artworks = artworks.filter((artwork: Artwork) => artwork.id !== artworkId);
+      artworks = artworks.filter((artwork: any) => artwork.id !== artworkId);
 
       localStorage.setItem(`savedArtworks_${userId}`, JSON.stringify(artworks));
 
      
-      setArtworks(artworks.filter((artwork: Artwork) => artwork.collectionName === decodedUserCollection));
+      setArtworks(artworks.filter((artwork: any) => artwork.collectionName === decodedUserCollection));
     }
   };
 
@@ -57,7 +63,7 @@ const CollectionDetail = ({ params }: { params: Promise<{ user_collection: strin
               </button>
             <CollectionCard
               key={artwork.id}
-              image={artwork.image || '/sorry-image-not-available.jpg'}
+              image={artwork.image}
               title={artwork.title}
               description={artwork.description}
               culture={artwork.culture}

@@ -15,6 +15,7 @@ export interface Artwork {
   creation_date?: string;
   did_you_know?: string;
   collectionName: string;
+  department: string
 }
 
 export interface Collection {
