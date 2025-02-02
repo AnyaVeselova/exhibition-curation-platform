@@ -5,7 +5,7 @@ interface CollectionCardProps {
   image: string;
   title: string;
   description?: string;
-  culture?: string[];
+  culture?: string;
   date?: string;
   didYouKnow?: string;
 }

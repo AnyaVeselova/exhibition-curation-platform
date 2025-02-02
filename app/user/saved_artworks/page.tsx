@@ -3,12 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CollectionCard from '@/app/collectionCard';
+import type { Artwork } from '@/app/_utils/apiCalls';
 
 const userId = 'user123'; 
 
 const SavedArtworks = () => {
-  const [savedArtworks, setSavedArtworks] = useState<any[]>([]);
-  const [groupedCollections, setGroupedCollections] = useState<any>({});
+  const [savedArtworks, setSavedArtworks] = useState<Artwork[]>([]);
+  const [groupedCollections, setGroupedCollections] = useState<Record<string, Artwork[]>>({});
   const router = useRouter();
 
   useEffect(() => {
@@ -16,8 +17,8 @@ const SavedArtworks = () => {
     if (savedArtworksStr) {
       const artworks = JSON.parse(savedArtworksStr);
 
-      const collections: any = {};
-      artworks.forEach((artwork: any) => {
+      const collections: Record<string, Artwork[]> = {}
+      artworks.forEach((artwork: Artwork) => {
         const { collectionName } = artwork;
         if (!collections[collectionName]) collections[collectionName] = [];
         collections[collectionName].push(artwork);

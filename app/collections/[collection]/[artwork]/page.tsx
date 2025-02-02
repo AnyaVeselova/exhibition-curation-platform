@@ -1,18 +1,18 @@
 'use client';
 
 import { use, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { fetchArtworkDetails } from '@/app/_utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import { Bookmark } from 'lucide-react';
+import type { Artwork } from '@/app/_utils/apiCalls';
+
 
 const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
   const { artwork } = use(params);
-  const [artworkData, setArtworkData] = useState<any | null>(null);
+  const [artworkData, setArtworkData] = useState<Artwork | null>(null);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
-  const router = useRouter();
-
+ 
   const userId = 'user123';
 
   useEffect(() => {
@@ -33,12 +33,13 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
     }
   }, [artwork]);
 
+ 
   
   useEffect(() => {
     if (artworkData) {
       const savedArtworksStr = localStorage.getItem(`savedArtworks_${userId}`);
       const savedArtworks = savedArtworksStr ? JSON.parse(savedArtworksStr) : [];
-      const isSaved = savedArtworks.some((item: any) => item.id === artworkData.id);
+      const isSaved = savedArtworks.some((item: Artwork) => item.id === artworkData.id);
       setSaved(!!isSaved);
     }
   }, [artworkData, userId]);
@@ -67,7 +68,7 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
         setSaved(true); 
       } else {
        
-        savedArtworks = savedArtworks.filter((item: any) => item.id !== artworkData.id);
+        savedArtworks = savedArtworks.filter((item: Artwork) => item.id !== artworkData.id);
         localStorage.setItem(`savedArtworks_${userId}`, JSON.stringify(savedArtworks));
         setSaved(false); 
       }

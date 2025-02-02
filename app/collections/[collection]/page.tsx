@@ -1,6 +1,5 @@
 'use client';
 import React, { use, useState, useEffect } from 'react';
-import SearchBar from './searchBar';
 import { fetchArtworksByDepartment, Artwork } from '@/app/_utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
@@ -11,7 +10,6 @@ import { useSearchParams } from 'next/navigation';
 
 const perPage = 10
 const Collection = ({ params }: { params: Promise<{ collection: string }> }) => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
   const { collection } = use(params);
   const {setCollection} = useCollection()
   const decodedCollection = decodeURIComponent(collection);
@@ -48,7 +46,7 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
 
   return (
     <div>
-      <SearchBar setSearchTerm={setSearchTerm} />
+      
       {artworks.map((artwork) => (
         <Link href={`/collections/${encodeURIComponent(collection)}/${artwork.id}`} key={artwork.id}>
           <CollectionCard image={artwork.imageUrl} title={artwork.title} />

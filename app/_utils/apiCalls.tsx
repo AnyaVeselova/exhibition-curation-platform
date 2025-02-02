@@ -3,6 +3,18 @@ export interface Artwork {
   title: string;
   creator: string;
   imageUrl: string;
+  collection: string;
+  images?: {
+    web?: {
+      url:string;
+    }
+  }
+  image?: string;
+  description?: string;
+  culture?: string;
+  creation_date?: string;
+  did_you_know?: string;
+  collectionName: string;
 }
 
 export interface Collection {
