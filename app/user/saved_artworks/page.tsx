@@ -51,7 +51,6 @@ const SavedArtworks = () => {
             <CollectionCard
             image={artworks[0].image || '/sorry-image-not-available.jpg'}  
             title={collectionName}     
-            description={artworks[0].description}  
             culture={artworks[0].culture}   
             date={artworks[0].creation_date}  
             didYouKnow={artworks[0].did_you_know} 

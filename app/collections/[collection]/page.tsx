@@ -45,13 +45,15 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
   
 
   return (
-    <div>
+    <div >
        <h2 className="text-center text-3xl font-semibold text-gray-800 mt-4 mb-6">Collection: {decodedCollection}</h2>
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {artworks.map((artwork) => (
         <Link href={`/collections/${encodeURIComponent(collection)}/${artwork.id}`} key={artwork.id}>
-          <CollectionCard image={artwork.imageUrl} title={artwork.title} />
+          <CollectionCard image={artwork.imageUrl} title={artwork.title} creator={artwork.creator }/>
         </Link>
       ))}
+      </div>
       <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage}/>
     </div>
   );

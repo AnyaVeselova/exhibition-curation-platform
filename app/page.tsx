@@ -11,12 +11,12 @@ export default function Home() {
 
   
   return (
-    
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 m-5">
+    <div className="flex justify-center items-center min-h-screen p-6">
+    <div className={`grid grid-cols-1 md:grid-cols-${museums.length === 1 ? "1" : "2"} gap-6 p-6 m-5`}>
       {museums.map((museum) => (
-        <div key={museum.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div key={museum.id} className="bg-white rounded-lg shadow-lg overflow-hidden max-w-[600px]">
           <Link href={`/collections`}>
-            
+          <div className="flex justify-center items-center">
           <Image
                 src={museum.imageSrc}
                 alt={`${museum.name} image`}
@@ -24,6 +24,7 @@ export default function Home() {
                 height={300}
                 className="object-cover"
               />
+              </div>
               <div className="p-4">
                 <h2 className="text-xl font-semibold mb-2">{museum.name}</h2>
                 <p className="text-gray-700">{museum.about}</p>
@@ -32,6 +33,8 @@ export default function Home() {
           </Link>
         </div>
       ))}
+    </div>
+    
     </div>
   );
 }
