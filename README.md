@@ -27,8 +27,7 @@ Copy code
 npm install
 
 - `Start the development server:`
-bash
-Copy code
+
 npm run dev
 
 - `Open your browser and navigate to http://localhost:3000.`
