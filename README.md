@@ -1,6 +1,8 @@
 # Exhibition Curator Project
 The Exhibition Curator project is a web application that allows users to explore artworks from the Clevelend Art Museum and the MET Museum. Users can filter, and curate a personalised exhibition of selected artworks.
 
+https://exhibition-curation-platform-omega.vercel.app/
+
 # Built with 
 - `Next.js`
 - `React`
