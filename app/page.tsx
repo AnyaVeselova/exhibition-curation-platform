@@ -16,9 +16,11 @@ export default function Home() {
   return (
     <div className="flex justify-center items-center min-h-screen p-4">
       <div
-        className={`grid ${
-          museums.length === 1 ? "grid-cols-1 justify-center" : "sm:grid-cols-2 lg:grid-cols-2"
-        } gap-6 p-6 max-w-6xl mx-auto`}
+        className={`grid gap-6 p-6 max-w-6xl mx-auto ${
+          museums.length === 1
+            ? "grid-cols-1 place-items-center" 
+            : "sm:grid-cols-2 lg:grid-cols-2"
+        }`}
       >
         {museums.map((museum) => (
           <Link key={museum.id} href={`/collections`} className="block">
