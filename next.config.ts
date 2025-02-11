@@ -7,8 +7,19 @@ const nextConfig: NextConfig = {
   }, 
   images: {
     domains: ['openaccess-cdn.clevelandart.org']
+  },
+  async headers() {
+    return [
+      {source: "/(.*)",
+        headers: [
+          {
+            key: 'x-vercel-protection-bypass',
+            value: process.env.VERCEL_PROTECTION_BYPASS_SECRET || "",
+          }
+        ]
+      }
+    ]
   }
-  
 };
 
 export default nextConfig;
