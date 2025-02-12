@@ -150,7 +150,7 @@ export const fetchArtworkDetails = async (id: string): Promise<Artwork> => {
 
 /** ----------------- Art Institute of Chicago API Calls (New) ----------------- */
 
-export const fetchDepartmentsWithArtworkImage = async (): Promise<any[]> => {
+export const fetchDepartmentsWithArtworkImage = async (): Promise<Collection[]> => {
   try {
     // Fetch the list of departments
     const departmentsResponse = await fetch("https://api.artic.edu/api/v1/departments");
@@ -158,7 +158,7 @@ export const fetchDepartmentsWithArtworkImage = async (): Promise<any[]> => {
 
     // Process each department to find an associated artwork with an image
     const departmentsWithArtworks = await Promise.all(
-      departmentsData.data.map(async (department: any) => {
+      departmentsData.data.map(async (department: Collection) => {
         // Search for artworks in the current department
         const artworksResponse = await fetch(
           `https://api.artic.edu/api/v1/artworks/search?q=${encodeURIComponent(department.title)}&limit=10&fields=id,title,image_id`
@@ -166,7 +166,7 @@ export const fetchDepartmentsWithArtworkImage = async (): Promise<any[]> => {
         const artworksData = await artworksResponse.json();
     
         // Find the first artwork with an image_id
-        const artworkWithImage = artworksData.data.find((artwork: any) => artwork.image_id);
+        const artworkWithImage = artworksData.data.find((artwork: Artwork) => artwork.image_id);
 
         return {
           id: department.id,
