@@ -17,7 +17,7 @@ export interface Artwork {
   collectionName: string;
   department?: string;
   creators: {id:number; description: string}[]
-  creator: {id:number; description: string} 
+  creator: string
  
 }
 

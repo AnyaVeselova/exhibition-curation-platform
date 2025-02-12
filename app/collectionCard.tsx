@@ -10,7 +10,7 @@ interface CollectionCardProps {
   culture?: string;
   date?: string;
   didYouKnow?: string;
-  creator?: {id:number; description: string} 
+  creator?: string;
 }
 
 const CollectionCard: React.FC<CollectionCardProps> = ({ image, title, description, culture, date, didYouKnow, creator }) => {
@@ -32,8 +32,8 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ image, title, descripti
       <div className="p-4">
       <h3 className={`text-lg font-semibold text-gray-800 ${(
         pathname === `/collections` ||
-        pathname === `/cleveland` || 
-        pathname === `/chicago`|| 
+        pathname === `/clevelend` || 
+        pathname === `/chiicago`|| 
         pathname === `/collections/${collection}` || 
         pathname === `/user/saved_artworks/${collection}` || 
         pathname === `/user/saved_artworks`

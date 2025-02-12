@@ -19,7 +19,7 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
   const searchParams = useSearchParams();
   const type = searchParams.get('type') || '';
   const artist = searchParams.get('artists') || '';
-console.log(artist)
+
   useEffect(()=> {
 
       setCollection(collection as string)
@@ -42,7 +42,7 @@ console.log(artist)
     };
     fetchArtworks();
   }, [decodedCollection, page, type, artist]);
-  
+
   
   return (
     <div >
@@ -50,7 +50,7 @@ console.log(artist)
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {artworks.map((artwork) => (
         <Link href={`/collections/${encodeURIComponent(collection)}/${artwork.id}`} key={artwork.id}>
-          <CollectionCard image={artwork.imageUrl} title={artwork.title} creator={artwork.creator }/>
+          <CollectionCard image={artwork.imageUrl} title={artwork.title} creator={artwork.creator}/>
         </Link>
       ))}
       </div>
