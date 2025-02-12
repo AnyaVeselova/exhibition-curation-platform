@@ -15,7 +15,7 @@ export interface Artwork {
   culture?: string;
   creation_date?: string;
   did_you_know?: string;
-  collectionName?: string;
+  collectionName: string;
   department?: string;
 }
 

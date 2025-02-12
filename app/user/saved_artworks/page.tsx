@@ -19,6 +19,7 @@ const SavedArtworks = () => {
 
       const collections: Record<string, Artwork[]> = {}
       artworks.forEach((artwork: Artwork) => {
+       console.log(artwork)
         const { collectionName } = artwork;
         if (!collections[collectionName]) collections[collectionName] = [];
         collections[collectionName].push(artwork);
