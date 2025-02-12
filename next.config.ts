@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_HARVARD_API_KEY: '7d848129-3a3c-4008-b3bf-0ecce51cfd7a',
   }, 
   images: {
-    domains: ['openaccess-cdn.clevelandart.org']
+    domains: ['openaccess-cdn.clevelandart.org', 'www.artic.edu']
   },
   async headers() {
     return [

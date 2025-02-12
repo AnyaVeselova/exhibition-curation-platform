@@ -9,7 +9,14 @@ export default function Home() {
       name: "The Cleveland Museum of Art",
       imageSrc: "/cleveland-museum-of-art.webp",
       about:
-        "The Cleveland Museum of Art is renowned for the quality and breadth of its collection, which includes more than 63,000 artworks and spans 6,000 years of achievement in the arts. The museum is a significant international forum for exhibitions, scholarship, and performing arts and is a leader in digital innovations. One of the top comprehensive art museums in the nation, recognized for its award-winning Open Access program and free of charge to all, the Cleveland Museum of Art is located in the University Circle neighborhood.",
+        "The Cleveland Museum of Art is renowned for the quality and breadth of its collection...",
+    },
+    {
+      id: "chicago",
+      name: "The Art Institute of Chicago",
+      imageSrc:"/artic.webp",
+      about:
+        "The Art Institute of Chicago is one of the oldest and largest art museums in the United States...",
     },
   ];
 
@@ -23,13 +30,13 @@ export default function Home() {
         }`}
       >
         {museums.map((museum) => (
-          <Link key={museum.id} href={`/collections`} className="block">
+          <Link key={museum.id} href={`${museum.id}`} className="block">
             <div className="min-w-[300px] max-w-[500px] w-full">
-            <CollectionCard
-              image={museum.imageSrc}
-              title={museum.name}
-              description={museum.about}
-            />
+              <CollectionCard
+                image={museum.imageSrc}
+                title={museum.name}
+                description={museum.about}
+              />
             </div>
           </Link>
         ))}
