@@ -6,7 +6,7 @@ import { fetchCollectionsByMuseum, Collection } from '@/app/_utils/apiCalls'; //
 import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
 
-const CollectionArtworks = ({ params }: { params: { collections: string } }) => {
+const CollectionArtworks = ({ params }: { params: Promise<{ collections: string }> }) => {
   const { collections: collection } = use(params); // This is the dynamic museumId from the URL
   const [collections, setCollections] = useState<Collection[]>([]);
 
