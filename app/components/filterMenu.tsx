@@ -19,9 +19,23 @@ function FilterMenu({ isOpen, setIsOpen }: FilterMenuProps) {
   const router = useRouter();
 
   const applyFilter = () => {
-    let query = `/collections/${encodeURIComponent(selectedDepartment)}`;
-    if (selectedType) query += `?type=${encodeURIComponent(selectedType)}`;
-    if (selectedArtist) query += `&artist=${encodeURIComponent(selectedArtist)}`;
+    let query = "";
+
+    if (selectedArtist) {
+      query = `?artists=${encodeURIComponent(selectedArtist)}`;
+    } else {
+      query = `/collections/${encodeURIComponent(selectedDepartment)}`;
+    }
+  
+    console.log(query)
+    const params: string[] = [];
+    if (selectedType) params.push(`type=${encodeURIComponent(selectedType)}`);
+  
+    if (params.length > 0) {
+      query += `?${params.join("&")}`;
+    }
+  
+    console.log(query)
     router.push(query);
     setIsOpen(false);
   };

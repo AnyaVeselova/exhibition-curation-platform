@@ -1,7 +1,6 @@
 export interface Artwork {
   id: number;
   title: string;
-  creator: string;
   imageUrl: string;
   image_id: string;
   collection?: string;
@@ -17,6 +16,9 @@ export interface Artwork {
   did_you_know?: string;
   collectionName: string;
   department?: string;
+  creators: {id:number; description: string}[]
+  creator: {id:number; description: string} 
+ 
 }
 
 export interface Collection {
@@ -85,19 +87,40 @@ export const fetchArtworksByDepartment = async (
   artist?: string
 ): Promise<Artwork[]> => {
   const skip = (page - 1) * perPage;
-  let query = `https://openaccess-api.clevelandart.org/api/artworks/?has_image=1&limit=${perPage}&skip=${skip}`;
+  const baseUrl = `https://openaccess-api.clevelandart.org/api/artworks/?`;
+  const params = new URLSearchParams();
 
-  if (department) query += `&department=${encodeURIComponent(department)}`;
-  if (type) query += `&type=${encodeURIComponent(type)}`;
-  if (artist) query += `&creator=${encodeURIComponent(artist)}`;
+  
+  if (artist) {
+    params.append("artists", artist);
+  
+  }
+
+  params.append("has_image", "1");
+  params.append("limit", perPage.toString());
+  params.append("skip", skip.toString());
+
+  if (!artist && department) {
+
+    params.append("department", department);
+  }
+
+  if (type) {
+    params.append("type", type);
+  }
+
+  const query = baseUrl + params.toString();
+
+  console.log("Fetching artworks with query:", query);
 
   const response = await fetch(query);
   const data = await response.json();
+console.log(data)
 
   return data.data.map((item: Artwork) => ({
     id: item.id,
     title: item.title,
-    creator: item.creator || "Unknown",
+    creator: item.creators?.length > 0 ? item.creators[0].description : "Unknown",
     imageUrl: item.images?.web?.url || "/sorry-image-not-available.jpg",
   }));
 };

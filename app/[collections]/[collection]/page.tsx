@@ -18,8 +18,8 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
   const [totalPages, setTotalPages] = useState(1)
   const searchParams = useSearchParams();
   const type = searchParams.get('type') || '';
-  const artist = searchParams.get('artist') || '';
-
+  const artist = searchParams.get('artists') || '';
+console.log(artist)
   useEffect(()=> {
 
       setCollection(collection as string)
@@ -43,7 +43,7 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
     fetchArtworks();
   }, [decodedCollection, page, type, artist]);
   
-
+  
   return (
     <div >
        <h2 className="text-center text-3xl font-semibold text-gray-800 mt-4 mb-6">Collection: {decodedCollection}</h2>
