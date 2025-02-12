@@ -10,7 +10,7 @@ interface CollectionCardProps {
   culture?: string;
   date?: string;
   didYouKnow?: string;
-  creator?: string;
+  creator?: {id:number; description: string} 
 }
 
 const CollectionCard: React.FC<CollectionCardProps> = ({ image, title, description, culture, date, didYouKnow, creator }) => {
