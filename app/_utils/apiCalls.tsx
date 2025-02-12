@@ -3,6 +3,7 @@ export interface Artwork {
   title: string;
   creator: string;
   imageUrl: string;
+  image_id: string;
   collection?: string;
   images?: {
     web?: {
@@ -20,7 +21,8 @@ export interface Artwork {
 
 export interface Collection {
   id: number;
-  name: string;
+  name : string;
+  title: string;
   imageUrl: string;
 }
 
