@@ -6,11 +6,13 @@ import { fetchCollectionsByMuseum, Collection } from '@/app/_utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
 
+
 const CollectionArtworks = ({ params }: { params: Promise<{ collections: string }> }) => {
   const { collections: paramCollection } = use(params); 
   const [collections, setCollections] = useState<Collection[]>([]);
 
   useEffect(() => {
+ 
     const loadCollections = async () => {
 
 

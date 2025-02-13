@@ -1,14 +1,14 @@
 'use client';
 
 import { use, useEffect, useState } from 'react';
-import { fetchArtworkDetails } from '@/app/_utils/apiCalls';
+import { fetchArtworkByMuseum, parseHTML } from '@/app/_utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import { Bookmark } from 'lucide-react';
 import type { Artwork } from '@/app/_utils/apiCalls';
 
 
-const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
-  const { artwork } = use(params);
+const Artwork = ({ params }: { params: Promise<{ artwork: number, collections: string}> }) => {
+  const { artwork, collections: museumId } = use(params);
   const [artworkData, setArtworkData] = useState<Artwork | null>(null);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
@@ -19,7 +19,7 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
     const fetchArtwork = async () => {
       try {
         setLoading(true);
-        const data = await fetchArtworkDetails(artwork);
+        const data = await fetchArtworkByMuseum(museumId, artwork);
         setArtworkData(data);
       } catch (error) {
         console.error('Error fetching artwork:', error);
@@ -33,7 +33,7 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
     }
   }, [artwork]);
 
-
+ 
   
   useEffect(() => {
     if (artworkData) {
@@ -45,33 +45,42 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
   }, [artworkData, userId]);
 
 
-
   const handleSave = () => {
     if (!artworkData) return;
+
 
     try {
 
       const savedArtworksStr = localStorage.getItem(`savedArtworks_${userId}`);
       let savedArtworks = savedArtworksStr ? JSON.parse(savedArtworksStr) : [];
 
-      const collectionName = artworkData.department 
+      const collectionName = artworkData.department  || artworkData.department_title
+
+      
       if (!saved) {
-        
+    
        
         savedArtworks.push({
           id: artworkData.id,
-          image: artworkData.images?.web?.url || 'default-image-url', 
+          image: artworkData.images?.web?.url || artworkData.imageUrl || '/default-image-url', 
           title: artworkData.title,
-          description: artworkData.description,
+          description: parseHTML(artworkData.description ||''),
+          didYouKnow: parseHTML(artworkData.did_you_know || artworkData.exhibition_history || ""),
+          culture: parseHTML(artworkData.culture || artworkData.artist_display
+|| ''),
+          date: artworkData.creation_date || artworkData.date_display,
+          museumId,
           collectionName,
         });
    
         localStorage.setItem(`savedArtworks_${userId}`, JSON.stringify(savedArtworks));
+
         setSaved(true); 
       } else {
        
         savedArtworks = savedArtworks.filter((item: Artwork) => item.id !== artworkData.id);
         localStorage.setItem(`savedArtworks_${userId}`, JSON.stringify(savedArtworks));
+        
         setSaved(false); 
       }
     } catch (error) {
@@ -79,8 +88,8 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
     }
   };
 
-  
 
+ 
   if (loading) return <h1>Loading...</h1>;
   if (!artworkData) return <h1>Artwork not found</h1>;
 
@@ -100,12 +109,14 @@ const Artwork = ({ params }: { params: Promise<{ artwork: string }> }) => {
       </button>
 
       <CollectionCard
-        image={artworkData.images?.web?.url || '/default-image.jpg'}
-        title={artworkData.title}
-        description={artworkData.description}
-        culture={artworkData.culture}
-        date={artworkData.creation_date}
-        didYouKnow={artworkData.did_you_know}
+        image={artworkData.images?.web?.url || artworkData.imageUrl || '/default-image.jpg'}
+        title={parseHTML(artworkData.title || '')}
+        description={parseHTML(artworkData.description || '')}
+        culture = {parseHTML(artworkData.culture || artworkData.artist_display
+          || '')}
+        date={artworkData.creation_date || artworkData.date_display}
+        didYouKnow={parseHTML(artworkData.did_you_know || artworkData.exhibition_history || "")}
+    
       />
     </div>
   );

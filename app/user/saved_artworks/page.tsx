@@ -19,7 +19,7 @@ const SavedArtworks = () => {
 
       const collections: Record<string, Artwork[]> = {}
       artworks.forEach((artwork: Artwork) => {
-       console.log(artwork)
+     
         const { collectionName } = artwork;
         if (!collections[collectionName]) collections[collectionName] = [];
         collections[collectionName].push(artwork);
@@ -30,7 +30,6 @@ const SavedArtworks = () => {
     }
   }, [userId]);
 
- 
 
   const handleCollectionClick = (collectionName: string) => {
     router.push(`/user/saved_artworks/${collectionName}`);

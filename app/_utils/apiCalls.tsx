@@ -1,5 +1,8 @@
+
+
 export interface Artwork {
   id: number;
+  museumId: string;
   title: string;
   imageUrl: string;
   image_id: string;
@@ -16,9 +19,13 @@ export interface Artwork {
   did_you_know?: string;
   collectionName: string;
   department?: string;
+  department_title: string;
   creators: {id:number; description: string}[]
   creator: string,
   artist_title?: string; 
+  date_display: number;
+  exhibition_history: string;
+  artist_display: string;
  
 }
 
@@ -112,11 +119,11 @@ export const fetchArtworksByDepartment = async (
 
   const query = baseUrl + params.toString();
 
-  console.log("Fetching artworks with query:", query);
+
 
   const response = await fetch(query);
   const data = await response.json();
-console.log(data)
+
 
   return data.data.map((item: Artwork) => ({
     id: item.id,
@@ -160,13 +167,14 @@ export const fetchCollections = async (): Promise<Collection[]> => {
   return collectionsWithImages.filter((collection) => collection !== null) as Collection[];
 };
 
-export const fetchArtworkDetails = async (id: string): Promise<Artwork> => {
+export const fetchArtworkDetails = async (id: number): Promise<Artwork> => {
   try {
     const response = await fetch(`https://openaccess-api.clevelandart.org/api/artworks/${id}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch artwork with ID ${id}`);
     }
     const data = await response.json();
+  
     return data.data as Artwork;
   } catch (error) {
     console.error("Error fetching artwork details:", error);
@@ -219,7 +227,7 @@ export const fetchArtworksFromChicago = async (collection: string, page: number,
     );
     const data = await response.json();
 
-    console.log(data.data[0])
+
     return data.data.map((item: Artwork) => ({
       id: item.id,
       title: item.title,
@@ -259,4 +267,45 @@ export const fetchArtworksByMuseum = async (
     return fetchArtworksFromChicago(collection, page, perPage); 
   }
   return [];
+};
+
+export const fetchArtworkFromChicago = async (id: number): Promise<Artwork> => {
+  try {
+    const response = await fetch(`https://api.artic.edu/api/v1/artworks/${id}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch artwork with ID ${id}`);
+    }
+    const data = await response.json();
+    const item = data.data
+
+ 
+    return {
+     ...item,
+      imageUrl: item
+        ? `https://www.artic.edu/iiif/2/${item.image_id}/full/843,/0/default.jpg`
+        : "/placeholder.jpg", 
+    } as Artwork
+  } catch (error) {
+    console.error("Error fetching artwork details:", error);
+    throw error;
+  }
+};
+
+
+
+export const fetchArtworkByMuseum = async (
+  museumId: string,
+ artworkId: number
+): Promise<Artwork | null> => {
+  if (museumId === "cleveland") {
+    return fetchArtworkDetails(artworkId)
+  } else if (museumId === "chicago") {
+    return fetchArtworkFromChicago(artworkId); 
+  }
+  return null;
+};
+
+export const parseHTML = (htmlString: string) => {
+  const doc = new DOMParser().parseFromString(htmlString, "text/html");
+  return doc.body.textContent || "";
 };

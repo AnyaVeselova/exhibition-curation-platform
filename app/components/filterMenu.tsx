@@ -27,7 +27,7 @@ function FilterMenu({ isOpen, setIsOpen }: FilterMenuProps) {
       query = `/collections/${encodeURIComponent(selectedDepartment)}`;
     }
   
-    console.log(query)
+    
     const params: string[] = [];
     if (selectedType) params.push(`type=${encodeURIComponent(selectedType)}`);
   

@@ -5,12 +5,14 @@ import { Trash2 } from 'lucide-react';
 import { Artwork } from '@/app/_utils/apiCalls';
 import Link from 'next/link';
 
+
 const userId = 'user123';
 
 const CollectionDetail = ({ params }: { params: Promise<{ user_collection: string }> }) => {
   const { user_collection } = use(params); 
   const decodedUserCollection = decodeURIComponent(user_collection);
   const [artworks, setArtworks] = useState<Artwork[]>([]);
+
 
   useEffect(() => {
     const savedArtworksStr = localStorage.getItem(`savedArtworks_${userId}`);
@@ -33,6 +35,8 @@ const CollectionDetail = ({ params }: { params: Promise<{ user_collection: strin
     }
   };
 
+
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">{decodedUserCollection} Collection</h1>
@@ -51,7 +55,7 @@ const CollectionDetail = ({ params }: { params: Promise<{ user_collection: strin
                 <Trash2 size={24} />
               </button>
 
-              <Link href={`/collections/${user_collection}/${artwork.id}`}>
+              <Link href={`/${artwork.museumId}/${user_collection}/${artwork.id}`}>
                 <CollectionCard
                   image={artwork.image || '/sorry-image-not-available.jpg'}
                   title={artwork.title}
