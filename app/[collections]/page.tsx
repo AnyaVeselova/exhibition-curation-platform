@@ -5,14 +5,16 @@ import React, {use, useState, useEffect } from 'react';
 import { fetchCollectionsByMuseum, Collection } from '@/app/_utils/apiCalls'; 
 import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
+import { useCollection } from '../collectionContext';
 
 
 const CollectionArtworks = ({ params }: { params: Promise<{ collections: string }> }) => {
   const { collections: paramCollection } = use(params); 
   const [collections, setCollections] = useState<Collection[]>([]);
+  const {setMuseum} = useCollection()
 
   useEffect(() => {
- 
+    setMuseum(paramCollection)
     const loadCollections = async () => {
 
 
