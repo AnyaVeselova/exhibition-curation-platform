@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { DEPARTMENTS } from '../_utils/apiCalls';
-
+import { useCollection } from '../collectionContext';
 const artworkTypes = [
   'Painting', 'Sculpture', 'Textile', 'Print', 'Jewelry', 'Photograph', 'Drawing', 'Ceramic', 'Glass', 'Metalwork', 'Furniture'
 ];
@@ -17,6 +17,7 @@ function FilterMenu({ isOpen, setIsOpen }: FilterMenuProps) {
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const [selectedArtist, setSelectedArtist] = useState('');
   const router = useRouter();
+  const {museum} = useCollection()
 
   const applyFilter = () => {
     let query = "";
@@ -24,7 +25,7 @@ function FilterMenu({ isOpen, setIsOpen }: FilterMenuProps) {
     if (selectedArtist) {
       query = `?artists=${encodeURIComponent(selectedArtist)}`;
     } else {
-      query = `/collections/${encodeURIComponent(selectedDepartment)}`;
+      query = `/${museum}/${encodeURIComponent(selectedDepartment)}`;
     }
   
     

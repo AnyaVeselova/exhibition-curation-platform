@@ -14,7 +14,7 @@ interface CollectionCardProps {
 }
 
 const CollectionCard: React.FC<CollectionCardProps> = ({ image, title, description, culture, date, didYouKnow, creator }) => {
-    const { collection } = useCollection();
+    const { collection, museum } = useCollection();
     const pathname = usePathname();
   
   return (
@@ -31,15 +31,13 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ image, title, descripti
       </div>
       <div className="p-6">
         <h3 className={`text-lg font-semibold text-gray-800 ${(
-          pathname === `/collections` ||
-          pathname === `/cleveland` || 
-          pathname === `/chicago`|| 
-          pathname === `/collections/${collection}` || 
+          pathname === `/${museum}` ||
+          pathname === `/${museum}/${collection}` || 
           pathname === `/user/saved_artworks/${collection}` || 
           pathname === `/user/saved_artworks`
         ) && "text-center"}`}>{title}</h3>
 
-        {creator && <p className={`text-sm ${pathname === `/collections/${collection}` && "text-center"} text-gray-500`}>{creator}</p>}
+        {creator && <p className={`text-sm ${pathname === `/${museum}/${collection}` && "text-center"} text-gray-500`}>{creator}</p>}
         {date && <p className="text-sm text-gray-500">{date}</p>}
         {culture && <p className="text-sm text-gray-600">{culture}</p>}
         {description && <p className="text-sm mt-2">{description}</p>}
