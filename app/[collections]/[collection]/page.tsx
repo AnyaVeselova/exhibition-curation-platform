@@ -1,16 +1,16 @@
 'use client';
 import React, { use, useState, useEffect } from 'react';
-import { fetchArtworksByDepartment, Artwork } from '@/app/_utils/apiCalls';
+import { fetchArtworksByMuseum, Artwork } from '@/app/_utils/apiCalls';
 import CollectionCard from '@/app/collectionCard';
 import Link from 'next/link';
 import Pagination from './pagination';
 import {useCollection} from '../../collectionContext'
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useParams } from 'next/navigation';
 
 
 const perPage = 10
-const Collection = ({ params }: { params: Promise<{ collection: string }> }) => {
-  const { collection } = use(params);
+const Collection = ({ params }: { params: Promise<{ collection: string, collections: string}> }) => {
+  const { collection, collections: museumId} = use(params);
   const {setCollection} = useCollection()
   const decodedCollection = decodeURIComponent(collection);
   const [artworks, setArtworks] = useState<Artwork[]>([]);
@@ -19,6 +19,8 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
   const searchParams = useSearchParams();
   const type = searchParams.get('type') || '';
   const artist = searchParams.get('artists') || '';
+  
+
 
   useEffect(()=> {
 
@@ -31,7 +33,7 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
     
     const fetchArtworks = async () => {
       try {
-        const collectionArtworks = await fetchArtworksByDepartment(decodedCollection, page, perPage, type, artist);
+        const collectionArtworks = await fetchArtworksByMuseum(museumId, decodedCollection, page, perPage, type, artist);
         setArtworks(collectionArtworks);
         if(page === 1 && collectionArtworks.length === perPage) {
           setTotalPages(Math.ceil(1000/perPage))
@@ -41,7 +43,7 @@ const Collection = ({ params }: { params: Promise<{ collection: string }> }) => 
       }
     };
     fetchArtworks();
-  }, [decodedCollection, page, type, artist]);
+  }, [decodedCollection, page, type, artist, museumId]);
 
   
   return (

@@ -32,8 +32,8 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ image, title, descripti
       <div className="p-4">
       <h3 className={`text-lg font-semibold text-gray-800 ${(
         pathname === `/collections` ||
-        pathname === `/clevelend` || 
-        pathname === `/chiicago`|| 
+        pathname === `/cleveland` || 
+        pathname === `/chicago`|| 
         pathname === `/collections/${collection}` || 
         pathname === `/user/saved_artworks/${collection}` || 
         pathname === `/user/saved_artworks`

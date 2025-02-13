@@ -17,7 +17,8 @@ export interface Artwork {
   collectionName: string;
   department?: string;
   creators: {id:number; description: string}[]
-  creator: string
+  creator: string,
+  artist_title?: string; 
  
 }
 
@@ -177,20 +178,19 @@ export const fetchArtworkDetails = async (id: string): Promise<Artwork> => {
 
 export const fetchDepartmentsWithArtworkImage = async (): Promise<Collection[]> => {
   try {
-    // Fetch the list of departments
+    
     const departmentsResponse = await fetch("https://api.artic.edu/api/v1/departments");
     const departmentsData = await departmentsResponse.json();
 
-    // Process each department to find an associated artwork with an image
+    
     const departmentsWithArtworks = await Promise.all(
       departmentsData.data.map(async (department: Collection) => {
-        // Search for artworks in the current department
+       
         const artworksResponse = await fetch(
           `https://api.artic.edu/api/v1/artworks/search?q=${encodeURIComponent(department.title)}&limit=10&fields=id,title,image_id`
         );
         const artworksData = await artworksResponse.json();
     
-        // Find the first artwork with an image_id
         const artworkWithImage = artworksData.data.find((artwork: Artwork) => artwork.image_id);
 
         return {
@@ -198,7 +198,7 @@ export const fetchDepartmentsWithArtworkImage = async (): Promise<Collection[]> 
           name: department.title,
           imageUrl: artworkWithImage
             ? `https://www.artic.edu/iiif/2/${artworkWithImage.image_id}/full/843,/0/default.jpg`
-            : "/placeholder.jpg", // Fallback image if no artwork with image is found
+            : "/placeholder.jpg", 
         };
       })
     );
@@ -212,22 +212,20 @@ export const fetchDepartmentsWithArtworkImage = async (): Promise<Collection[]> 
 
 
 
-
-
-
 export const fetchArtworksFromChicago = async (collection: string, page: number, perPage: number): Promise<Artwork[]> => {
   try {
     const response = await fetch(
-      `https://api.artic.edu/api/v1/artworks?limit=${perPage}&page=${page}&fields=id,title,artist_title,image_id`
+      `https://api.artic.edu/api/v1/artworks/search?q=${encodeURIComponent(collection)}limit=${perPage}&page=${page}&fields=id,title,artist_title,image_id`
     );
     const data = await response.json();
 
+    console.log(data.data[0])
     return data.data.map((item: Artwork) => ({
       id: item.id,
       title: item.title,
-      creator: item.creator || "Unknown",
-      imageUrl: item.imageUrl
-        ? `https://www.artic.edu/iiif/2/${item.imageUrl}/full/843,/0/default.jpg`
+      creator: item.artist_title || "Unknown",
+      imageUrl: item
+        ? `https://www.artic.edu/iiif/2/${item.image_id}/full/843,/0/default.jpg`
         : "/placeholder.jpg",
     }));
   } catch (error) {
@@ -240,9 +238,9 @@ export const fetchArtworksFromChicago = async (collection: string, page: number,
 
 export const fetchCollectionsByMuseum = async (museumId: string): Promise<Collection[]> => {
   if (museumId === "cleveland") {
-    return fetchCollections(); // Calls Cleveland function
+    return fetchCollections(); 
   } else if (museumId === "chicago") {
-    return fetchDepartmentsWithArtworkImage(); // Calls Chicago function
+    return fetchDepartmentsWithArtworkImage(); 
   }
   return [];
 };
@@ -251,12 +249,14 @@ export const fetchArtworksByMuseum = async (
   museumId: string,
   collection: string,
   page: number,
-  perPage: number
+  perPage: number,
+  type?: string,
+  artist?: string
 ): Promise<Artwork[]> => {
   if (museumId === "cleveland") {
-    return fetchArtworksByDepartment(collection, page, perPage); // Cleveland function
+    return fetchArtworksByDepartment(collection, page, perPage);
   } else if (museumId === "chicago") {
-    return fetchArtworksFromChicago(collection, page, perPage); // Chicago function
+    return fetchArtworksFromChicago(collection, page, perPage); 
   }
   return [];
 };
