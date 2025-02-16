@@ -11,7 +11,7 @@ export default function RootLayout({
       <body >
         <CollectionProvider>
           <Navbar /> 
-          <main className="py-20 px-20 my-20">{children}</main>
+          <main className="my-20 mx-10">{children}</main>
           <Footer />
         </CollectionProvider>
       </body>
