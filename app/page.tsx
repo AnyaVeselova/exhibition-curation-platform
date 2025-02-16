@@ -21,43 +21,38 @@ export default function Home() {
     },
   ];
 
-  const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const handleReadMore = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen p-4">
-      <div className="grid gap-6 p-6 max-w-6xl mx-auto grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-        {museums.map((museum) => (
-          <div key={museum.id} className="w-full max-w-[450px] mx-auto p-4">
-            <Link
-              href={`${museum.id}`}
-              className="block w-full"
-            >
-              <CollectionCard
-                image={museum.imageSrc}
-                title={museum.name}
-                description={
-                  expandedId === museum.id
-                    ? museum.about
-                    : `${museum.about.substring(0, 150)}...`
-                }
-              />
-            </Link>
-            <button
-              onClick={(e) => {
-                e.preventDefault(); // Prevent default behavior (link navigation)
-                handleReadMore(museum.id);
-              }}
-              className="text-blue-600 mt-2 text-sm"
-            >
-              {expandedId === museum.id ? "Show Less" : "Read More"}
-            </button>
-          </div>
-        ))}
-      </div>
+    <div className="content-container">
+      {museums.map((museum) => (
+        <div key={museum.id} className="w-full max-w-[400px] min-w-[320px] mx-auto">
+          <Link href={`/${museum.id}`} className="block w-full">
+            <CollectionCard
+              image={museum.imageSrc}
+              title={museum.name}
+              description={
+                expandedId === museum.id
+                  ? museum.about
+                  : `${museum.about.substring(0, 150)}...`
+              }
+            />
+          </Link>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              handleReadMore(museum.id);
+            }}
+            className="text-blue-600 mt-2 text-sm block text-center"
+          >
+            {expandedId === museum.id ? "Show Less" : "Read More"}
+          </button>
+        </div>
+      ))}
     </div>
   );
 }

@@ -18,30 +18,25 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ image, title, descripti
     const pathname = usePathname();
   
   return (
-    <div className="bg-white shadow-md rounded-lg mb-6 mt-20 overflow-hidden border border-gray-200 max-w-4xl mx-auto min-w-[350px]">
-      <div className="relative h-72 w-full">      
+    <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200 max-w-[350px] min-w-[280px] mx-auto">
+      <div className="relative h-60 w-full">      
         <Image 
           src={image}
           alt={title}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
           priority 
-          style={{ objectFit: 'contain' }}
+          style={{ objectFit: 'cover' }}
         />
       </div>
-      <div className="p-6">
-        <h3 className={`text-lg font-semibold text-gray-800 ${(
-          pathname === `/${museum}` ||
-          pathname === `/${museum}/${collection}` || 
-          pathname === `/user/saved_artworks/${collection}` || 
-          pathname === `/user/saved_artworks`
-        ) && "text-center"}`}>{title}</h3>
+      <div className="p-4">
+        <h3 className="text-lg font-semibold text-gray-800 text-center">{title}</h3>
 
-        {creator && <p className={`text-sm ${pathname === `/${museum}/${collection}` && "text-center"} text-gray-500`}>{creator}</p>}
-        {date && <p className="text-sm text-gray-500">{date}</p>}
-        {culture && <p className="text-sm text-gray-600">{culture}</p>}
-        {description && <p className="text-sm mt-2">{description}</p>}
-        {didYouKnow && <p className="text-xs italic text-gray-500 mt-2">💡 {didYouKnow}</p>}
+        {creator && <p className="text-sm text-gray-500 text-center">{creator}</p>}
+        {date && <p className="text-sm text-gray-500 text-center">{date}</p>}
+        {culture && <p className="text-sm text-gray-600 text-center">{culture}</p>}
+        {description && <p className="text-sm mt-2 text-center">{description}</p>}
+        {didYouKnow && <p className="text-xs italic text-gray-500 mt-2 text-center">💡 {didYouKnow}</p>}
       </div>
     </div>
   );
