@@ -95,8 +95,10 @@ export const fetchArtworksByDepartment = async (
   artist?: string
 ): Promise<Artwork[]> => {
   const skip = (page - 1) * perPage;
+  const decodedDepartment = decodeURIComponent(department)
   const baseUrl = `https://openaccess-api.clevelandart.org/api/artworks/?`;
   const params = new URLSearchParams();
+  console.log('api, decoded',decodedDepartment)
 
   params.append("has_image", "1");
   params.append("limit", perPage.toString());
@@ -104,22 +106,22 @@ export const fetchArtworksByDepartment = async (
 
   if (artist) {
     params.append("artists", artist);
-  } else {
-    if (department) {
-      params.append("department", department);
+  }else if (type) {
+    params.append("type", type)
+  }else {
+    if (decodedDepartment !== "") {
+      params.append("department", decodedDepartment);
     }
-     if (type) {
-    params.append("type", type);
-  }
+  
   }
 
   
- 
-
   const query = baseUrl + params.toString();
-  console.log(query);
+  console.log('apiCalls:',query);
 
-  const response = await fetch(query);
+  const response = await fetch(query , {
+    cache: 'force-cache',
+  });
   const data = await response.json();
 
   return data.data.map((item: Artwork) => ({
@@ -133,7 +135,9 @@ export const fetchArtworksByDepartment = async (
 
 export const fetchFirstArtworkWithImage = async (department: string): Promise<string | null> => {
   const response = await fetch(
-    `https://openaccess-api.clevelandart.org/api/artworks/?department=${encodeURIComponent(department)}&has_image=1&limit=1`
+    `https://openaccess-api.clevelandart.org/api/artworks/?department=${encodeURIComponent(department)}&has_image=1&limit=1`, {
+      cache: 'force-cache',
+    }
   );
   const data = await response.json();
 
@@ -167,7 +171,9 @@ export const fetchCollections = async (): Promise<Collection[]> => {
 
 export const fetchArtworkDetails = async (id: number): Promise<Artwork> => {
   try {
-    const response = await fetch(`https://openaccess-api.clevelandart.org/api/artworks/${id}`);
+    const response = await fetch(`https://openaccess-api.clevelandart.org/api/artworks/${id}`, {
+      cache: 'force-cache',
+    });
     if (!response.ok) {
       throw new Error(`Failed to fetch artwork with ID ${id}`);
     }
@@ -185,7 +191,9 @@ export const fetchArtworkDetails = async (id: number): Promise<Artwork> => {
 export const fetchDepartmentsWithArtworkImage = async (): Promise<Collection[]> => {
   try {
     
-    const departmentsResponse = await fetch("https://api.artic.edu/api/v1/departments");
+    const departmentsResponse = await fetch("https://api.artic.edu/api/v1/departments" , {
+      cache: 'force-cache',
+    });
     const departmentsData = await departmentsResponse.json();
 
     
@@ -193,7 +201,9 @@ export const fetchDepartmentsWithArtworkImage = async (): Promise<Collection[]> 
       departmentsData.data.map(async (department: Collection) => {
        
         const artworksResponse = await fetch(
-          `https://api.artic.edu/api/v1/artworks/search?q=${encodeURIComponent(department.title)}&limit=10&fields=id,title,image_id`
+          `https://api.artic.edu/api/v1/artworks/search?q=${encodeURIComponent(department.title)}&limit=10&fields=id,title,image_id`, {
+            cache: 'force-cache',
+          }
         );
         const artworksData = await artworksResponse.json();
     
@@ -221,7 +231,9 @@ export const fetchDepartmentsWithArtworkImage = async (): Promise<Collection[]> 
 export const fetchArtworksFromChicago = async (collection: string, page: number, perPage: number): Promise<Artwork[]> => {
   try {
     const response = await fetch(
-      `https://api.artic.edu/api/v1/artworks/search?q=${encodeURIComponent(collection)}limit=${perPage}&page=${page}&fields=id,title,artist_title,image_id`
+      `https://api.artic.edu/api/v1/artworks/search?q=${encodeURIComponent(collection)}limit=${perPage}&page=${page}&fields=id,title,artist_title,image_id`, {
+        cache: 'force-cache',
+      }
     );
     const data = await response.json();
 
@@ -269,7 +281,9 @@ export const fetchArtworksByMuseum = async (
 
 export const fetchArtworkFromChicago = async (id: number): Promise<Artwork> => {
   try {
-    const response = await fetch(`https://api.artic.edu/api/v1/artworks/${id}`);
+    const response = await fetch(`https://api.artic.edu/api/v1/artworks/${id}`, {
+      cache: 'force-cache',
+    });
     if (!response.ok) {
       throw new Error(`Failed to fetch artwork with ID ${id}`);
     }

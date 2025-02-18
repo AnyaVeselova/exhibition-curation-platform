@@ -13,6 +13,8 @@ const CollectionArtworks = ({ params }: { params: Promise<{ collections: string 
   const [collections, setCollections] = useState<Collection[]>([]);
   const {setMuseum} = useCollection()
 
+  
+
   useEffect(() => {
     setMuseum(paramCollection)
     const loadCollections = async () => {

@@ -20,23 +20,22 @@ const Collection = ({ params }: { params: Promise<{ collection: string, collecti
   const type = searchParams.get('type') || '';
   const artist = searchParams.get('artists') || '';
   
+ 
 
 
   useEffect(()=> {
 
-      setCollection(collection as string)
+      setCollection(decodedCollection as string)
 
     
-  }, [collection])
-
-
+  }, [decodedCollection])
 
 
   useEffect(() => {
     
     const fetchArtworks = async () => {
       try {
-        const collectionArtworks = await fetchArtworksByMuseum(museumId, decodedCollection, page, perPage, type, artist);
+        const collectionArtworks = await fetchArtworksByMuseum(museumId, collection, page, perPage, type, artist);
         setArtworks(collectionArtworks);
         if(page === 1 && collectionArtworks.length === perPage) {
           setTotalPages(Math.ceil(1000/perPage))
@@ -46,15 +45,16 @@ const Collection = ({ params }: { params: Promise<{ collection: string, collecti
       }
     };
     fetchArtworks();
-  }, [decodedCollection, page, type, artist, museumId]);
+  }, [collection, page, type, artist, museumId]);
+
 
   
   return (
     <div >
-       <h2 className="text-center text-3xl font-semibold text-gray-800 mt-4 mb-6">Collection: {decodedCollection}</h2>
+       <h2 className="text-center text-3xl font-semibold text-gray-800 mt-4 mb-6">Collection: {decodedCollection || type || artist}</h2>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {artworks.map((artwork) => (
-        <Link href={`/${museumId}/${encodeURIComponent(collection)}/${artwork.id}`} key={artwork.id}>
+        <Link href={`/${museumId}/${collection}/${artwork.id}`} key={artwork.id}>
           <CollectionCard image={artwork.imageUrl} title={artwork.title} creator={artwork.creator}/>
         </Link>
       ))}

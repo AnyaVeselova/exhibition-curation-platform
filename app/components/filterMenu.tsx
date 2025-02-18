@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { DEPARTMENTS } from '../_utils/apiCalls';
 import { useCollection } from '../collectionContext';
@@ -16,15 +16,31 @@ function FilterMenu({ isOpen, setIsOpen }: FilterMenuProps) {
   const [selectedType, setSelectedType] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const [selectedArtist, setSelectedArtist] = useState('');
+  const [isArtistVisible, setIsArtistVisible] = useState(true);
   const router = useRouter();
   const {museum} = useCollection()
 
+  useEffect(() => {
+   
+    if (selectedType || selectedDepartment) {
+      setSelectedArtist(''); 
+      setIsArtistVisible(false);
+    } else {
+      setIsArtistVisible(true);
+    }
+  }, [selectedType, selectedDepartment]);
+
+
   const applyFilter = () => {
     let query = `/${museum}`;  
+
   
 
     if (selectedDepartment) {
       query += `/${encodeURIComponent(selectedDepartment)}`;
+
+    }else{
+      query += `/""`
     }
   
   
@@ -80,6 +96,8 @@ function FilterMenu({ isOpen, setIsOpen }: FilterMenuProps) {
               ))}
             </select>
 
+            {isArtistVisible && (
+              <>
             <label className="block text-sm font-medium text-gray-700 mt-4">Artist</label>
             <input
               type="text"
@@ -88,6 +106,8 @@ function FilterMenu({ isOpen, setIsOpen }: FilterMenuProps) {
               value={selectedArtist}
               placeholder="Enter artist name"
             />
+            </>
+            )}
 
             <button
               className="mt-4 w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
