@@ -30,6 +30,8 @@ const Collection = ({ params }: { params: Promise<{ collection: string, collecti
   }, [collection])
 
 
+
+
   useEffect(() => {
     
     const fetchArtworks = async () => {

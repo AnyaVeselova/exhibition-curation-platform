@@ -20,26 +20,36 @@ function FilterMenu({ isOpen, setIsOpen }: FilterMenuProps) {
   const {museum} = useCollection()
 
   const applyFilter = () => {
-    let query = "";
+    let query = `/${museum}`;  
+  
 
-    if (selectedArtist) {
-      query = `?artists=${encodeURIComponent(selectedArtist)}`;
-    } else {
-      query = `/${museum}/${encodeURIComponent(selectedDepartment)}`;
+    if (selectedDepartment) {
+      query += `/${encodeURIComponent(selectedDepartment)}`;
     }
   
-    
+  
     const params: string[] = [];
-    if (selectedType) params.push(`type=${encodeURIComponent(selectedType)}`);
+  
+
+    if (selectedArtist) {
+      params.push(`artists=${encodeURIComponent(selectedArtist)}`);
+    }
+  
+
+    if (selectedType) {
+      params.push(`type=${encodeURIComponent(selectedType)}`);
+    }
   
     if (params.length > 0) {
       query += `?${params.join("&")}`;
     }
   
-    console.log(query)
+    console.log("Navigating to:", query); 
+  
     router.push(query);
     setIsOpen(false);
   };
+  
 
   return (
     <>

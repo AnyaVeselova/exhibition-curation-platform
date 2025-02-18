@@ -98,32 +98,29 @@ export const fetchArtworksByDepartment = async (
   const baseUrl = `https://openaccess-api.clevelandart.org/api/artworks/?`;
   const params = new URLSearchParams();
 
-  
-  if (artist) {
-    params.append("artists", artist);
-  
-  }
-
   params.append("has_image", "1");
   params.append("limit", perPage.toString());
   params.append("skip", skip.toString());
 
-  if (!artist && department) {
-
-    params.append("department", department);
-  }
-
-  if (type) {
+  if (artist) {
+    params.append("artists", artist);
+  } else {
+    if (department) {
+      params.append("department", department);
+    }
+     if (type) {
     params.append("type", type);
   }
+  }
+
+  
+ 
 
   const query = baseUrl + params.toString();
-
-
+  console.log(query);
 
   const response = await fetch(query);
   const data = await response.json();
-
 
   return data.data.map((item: Artwork) => ({
     id: item.id,
@@ -132,6 +129,7 @@ export const fetchArtworksByDepartment = async (
     imageUrl: item.images?.web?.url || "/sorry-image-not-available.jpg",
   }));
 };
+
 
 export const fetchFirstArtworkWithImage = async (department: string): Promise<string | null> => {
   const response = await fetch(
@@ -262,7 +260,7 @@ export const fetchArtworksByMuseum = async (
   artist?: string
 ): Promise<Artwork[]> => {
   if (museumId === "cleveland") {
-    return fetchArtworksByDepartment(collection, page, perPage);
+    return fetchArtworksByDepartment(collection || "", page, perPage, type, artist);
   } else if (museumId === "chicago") {
     return fetchArtworksFromChicago(collection, page, perPage); 
   }

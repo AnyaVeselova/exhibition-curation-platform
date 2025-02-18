@@ -19,12 +19,12 @@ function Footer() {
 
 
       <div className="fixed bottom-0 sm:bottom-5 sm:shadow-lg sm:shadow-base-500/30 hover:shadow-md left-0 duration-300 overflow-hidden border-t sm:border z-50 w-full h-16 bg-white sm:max-w-md sm:rounded-xl inset-x-0 mx-auto border-base-50">
-        <ul className={`grid h-full mx-auto font-medium ${pathname === `/${museum}/${collection}` ? 'grid-cols-4' : 'grid-cols-3'}`}>
+        <ul className={`grid h-full mx-auto font-medium ${pathname === `/${museum}` ? 'grid-cols-4' : 'grid-cols-3'}`}>
           <li className="inline-flex flex-col items-center justify-center px-5 hover:bg-base-50 group gap-1 hover:text-orange-500 text-base-500">
             <Link className="inline-flex flex-col items-center justify-center text-xs" href="/"><Home className="size-5" />Home</Link>
           </li>
 
-          {pathname === `/${museum}/${collection}` && (
+          {pathname === `/${museum}` && (
             <li className="inline-flex flex-col items-center justify-center px-5 hover:bg-base-50 group gap-1 hover:text-orange-500 text-base-500">
               <button className="inline-flex flex-col items-center justify-center text-xs" onClick={toggleFilter}>
                 <Filter className="size-5" /> Filter
